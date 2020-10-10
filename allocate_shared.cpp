@@ -23,24 +23,24 @@ class MyAlloc
 {
 public:
 	typedef T value_type;
-	
+
 	MyAlloc() : parent_type_new_func(operator new) {}
-	
+
 	template<class U>
 	MyAlloc(const MyAlloc<U> &u_alloc) noexcept
 		: parent_type_new_func(MyAlloc<U>::value_type::operator new)
 	{}
-	
+
 	T* allocate(size_t n)
 	{
 		return static_cast<T*>(parent_type_new_func(n * sizeof(T)));
 	}
-	
+
 	void deallocate(T *p, size_t n)
 	{
 		::delete(p);
 	}
-	
+
 	NewFunctionPtr parent_type_new_func;
 };
 
